@@ -19,7 +19,9 @@ import com.lexicalscope.jewel.cli.CliFactory;
 import com.lexicalscope.jewel.cli.Option;
 
 import de.tudarmstadt.ukp.dkpro.core.io.xmi.XmiWriter;
+import de.unistuttgart.ims.creta.api.Entity;
 import de.unistuttgart.ims.uimautil.SetDocumentId;
+import de.unistuttgart.ims.uimautil.TrimAnnotations;
 
 public class EvaluationMain {
 
@@ -41,6 +43,10 @@ public class EvaluationMain {
 		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class));
 		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class), CAS.NAME_DEFAULT_SOFA,
 				SILVER_VIEW);
+		ag.add(AnalysisEngineFactory.createEngineDescription(TrimAnnotations.class, TrimAnnotations.PARAM_TYPE,
+				Entity.class));
+		ag.add(AnalysisEngineFactory.createEngineDescription(TrimAnnotations.class, TrimAnnotations.PARAM_TYPE,
+				Entity.class), CAS.NAME_DEFAULT_SOFA, SILVER_VIEW);
 		ag.add(AnalysisEngineFactory.createEngineDescription(XmiWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
 				"target/", XmiWriter.PARAM_OVERWRITE, true));
 
