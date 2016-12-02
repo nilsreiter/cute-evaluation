@@ -32,7 +32,7 @@ public class NERBaseline {
 		for (File f : options.getInput().listFiles(Filters.xmiFilter)) {
 			SimplePipeline.runPipeline(
 					CollectionReaderFactory.createReaderDescription(XmiReader.class, XmiReader.PARAM_SOURCE_LOCATION,
-							f.getAbsolutePath()),
+							f.getAbsolutePath(), XmiReader.PARAM_LENIENT, true),
 					AnalysisEngineFactory.createEngineDescription(SetDocumentId.class, SetDocumentId.PARAM_DOCUMENT_ID,
 							f.getName().substring(0, f.getName().indexOf('.'))),
 					AnalysisEngineFactory.createEngineDescription(SetJCasLanguage.class, SetJCasLanguage.PARAM_LANGUAGE,
@@ -44,13 +44,13 @@ public class NERBaseline {
 							MapAnnotations.PARAM_SOURCE_CLASS, Person.class, MapAnnotations.PARAM_TARGET_CLASS,
 							EntityPER.class),
 					AnalysisEngineFactory.createEngineDescription(XmiWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
-							options.getOutput()));
+							options.getOutput(), XmiWriter.PARAM_OVERWRITE, true));
 		}
 
 	}
 
 	public interface Options {
-		@Option(defaultValue = "src/test/resources/eval")
+		@Option(defaultValue = "src/test/resources/gold")
 		public File getInput();
 
 		@Option(defaultValue = "src/test/resources/baseline-ner")
