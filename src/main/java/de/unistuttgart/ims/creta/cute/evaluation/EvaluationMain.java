@@ -68,13 +68,13 @@ public class EvaluationMain {
 	}
 
 	public interface Options {
-		@Option(defaultValue = "src/test/resources")
+		@Option(defaultValue = "src/test/resources/gold")
 		public File getGold();
 
-		@Option(defaultValue = "src/test/resources")
+		@Option(defaultValue = "src/test/resources/baseline-ner")
 		public File getSilver();
 
-		@Option(defaultValue = "conll")
+		@Option(defaultValue = "xmi")
 		public String getFormat();
 	}
 
