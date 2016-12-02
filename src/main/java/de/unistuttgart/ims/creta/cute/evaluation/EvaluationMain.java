@@ -51,11 +51,12 @@ public class EvaluationMain {
 					ag.createAggregateDescription());
 
 			eval.process(jcas);
-			AnnotationStatistics<String> stats = eval.getStats();
-			System.out.println(stats.countCorrectOutcomes());
-			System.out.println(stats.precision());
 
 		}
+		AnnotationStatistics<String> stats = eval.getStats();
+		System.out.println(stats.countCorrectOutcomes());
+		System.out.println(stats.precision());
+		System.out.println(stats.confusions().toHTML());
 	}
 
 	public interface Options {
