@@ -34,7 +34,9 @@ public class EvaluationMain {
 		if (options.getFormat().equalsIgnoreCase("xmi")) {
 			ag.add(AnalysisEngineFactory.createEngineDescription(ReadSilverXmi.class,
 					ReadSilverXmi.PARAM_INPUT_DIRECTORY, options.getSilver()));
-		}
+		} else if (options.getFormat().equalsIgnoreCase("conll"))
+			ag.add(AnalysisEngineFactory.createEngineDescription(ReadSilverCoNLL.class,
+					ReadSilverCoNLL.PARAM_INPUT_DIRECTORY, options.getSilver()));
 
 		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class));
 		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class), SILVER_VIEW,
@@ -66,7 +68,7 @@ public class EvaluationMain {
 		@Option(defaultValue = "src/test/resources")
 		public File getSilver();
 
-		@Option(defaultValue = "xmi")
+		@Option(defaultValue = "conll")
 		public String getFormat();
 	}
 
