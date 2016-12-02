@@ -39,8 +39,8 @@ public class EvaluationMain {
 					ReadSilverCoNLL.PARAM_INPUT_DIRECTORY, options.getSilver()));
 
 		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class));
-		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class), SILVER_VIEW,
-				CAS.NAME_DEFAULT_SOFA);
+		ag.add(AnalysisEngineFactory.createEngineDescription(VerifyCategoryFeatures.class), CAS.NAME_DEFAULT_SOFA,
+				SILVER_VIEW);
 		ag.add(AnalysisEngineFactory.createEngineDescription(XmiWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
 				"target/", XmiWriter.PARAM_OVERWRITE, true));
 

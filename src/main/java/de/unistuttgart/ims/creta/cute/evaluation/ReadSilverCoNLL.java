@@ -108,6 +108,11 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 			}
 
 			IOUtils.closeQuietly(p);
+
+			for (String candId : candidates.keySet()) {
+				AnnotationCandidate cand = candidates.get(candId);
+				AnnotationFactory.createAnnotation(silverView, cand.getBegin(), e, cand.getEntityClass());
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new AnalysisEngineProcessException(e);
