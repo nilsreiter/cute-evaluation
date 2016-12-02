@@ -37,7 +37,7 @@ public class ReadSilverXmi extends JCasAnnotator_ImplBase {
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		for (File f : inputDirectory.listFiles(XmiFilter.instance)) {
+		for (File f : inputDirectory.listFiles(Filters.xmiFilter)) {
 			silverFiles.put(f.getName().replaceAll(".xmi", ""), f);
 		}
 

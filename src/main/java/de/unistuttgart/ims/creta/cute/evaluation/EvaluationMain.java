@@ -43,7 +43,7 @@ public class EvaluationMain {
 				"target/", XmiWriter.PARAM_OVERWRITE, true));
 
 		Evaluation eval = new Evaluation();
-		for (File f : options.getGold().listFiles(XmiFilter.instance)) {
+		for (File f : options.getGold().listFiles(Filters.xmiFilter)) {
 			JCas jcas = JCasFactory.createJCas(f.getAbsolutePath(), tsd);
 			SimplePipeline.runPipeline(
 					jcas, AnalysisEngineFactory.createEngineDescription(SetDocumentId.class,
