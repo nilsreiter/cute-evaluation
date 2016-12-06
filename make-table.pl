@@ -4,7 +4,7 @@ use warnings;
 
 my $DIR="/Users/reiterns/Documents/CRETA/cute/results";
 my @corpora = ("bundestagsdebatten", "adorno", "parzival");
-my @systems = ("dfki", "ims", "baseline-ner");
+my @systems = ("dfki", "ims", "ims2", "baseline-ner");
 
 my $tag = shift;
 my $column = shift; #2; # 2 precision, 3 recall
