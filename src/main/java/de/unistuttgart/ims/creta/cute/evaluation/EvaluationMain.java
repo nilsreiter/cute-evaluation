@@ -2,7 +2,11 @@ package de.unistuttgart.ims.creta.cute.evaluation;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.CAS;
@@ -34,10 +38,10 @@ public class EvaluationMain {
 
 		AggregateBuilder ag = new AggregateBuilder();
 
-		if (options.getFormat().equalsIgnoreCase("xmi")) {
+		if (options.getFormat().equalsIgnoreCase("xmi"))
 			ag.add(AnalysisEngineFactory.createEngineDescription(ReadSilverXmi.class,
 					ReadSilverXmi.PARAM_INPUT_DIRECTORY, options.getSilver()));
-		} else if (options.getFormat().equalsIgnoreCase("conll"))
+		else if (options.getFormat().equalsIgnoreCase("conll"))
 			ag.add(AnalysisEngineFactory.createEngineDescription(ReadSilverCoNLL.class,
 					ReadSilverCoNLL.PARAM_INPUT_DIRECTORY, options.getSilver()));
 
@@ -49,7 +53,7 @@ public class EvaluationMain {
 		ag.add(AnalysisEngineFactory.createEngineDescription(TrimAnnotations.class, TrimAnnotations.PARAM_TYPE,
 				Entity.class), CAS.NAME_DEFAULT_SOFA, SILVER_VIEW);
 		ag.add(AnalysisEngineFactory.createEngineDescription(XmiWriter.class, XmiWriter.PARAM_TARGET_LOCATION,
-				"target/", XmiWriter.PARAM_OVERWRITE, true));
+				options.getOutput(), XmiWriter.PARAM_OVERWRITE, true, XmiWriter.PARAM_USE_DOCUMENT_ID, true));
 
 		Evaluation eval = new Evaluation();
 		for (File f : options.getGold().listFiles(Filters.xmiFilter)) {
@@ -64,20 +68,55 @@ public class EvaluationMain {
 
 		}
 		AnnotationStatistics<String> stats = eval.getStats();
-		System.out.println(stats.countCorrectOutcomes());
-		System.out.println(stats.precision());
-		System.out.println(stats.confusions().toHTML());
+		FileWriter fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".txt"));
+		fw.write(eval(stats, Arrays.asList("PER", "WRK", "ORG", "EVT", "CNC", "LOC")));
+		fw.flush();
+		fw.close();
+	}
+
+	public static String eval(AnnotationStatistics<String> stats, Collection<String> classes) {
+		StringBuilder b = new StringBuilder();
+
+		b.append("OVERALL");
+		b.append("\t").append(stats.precision());
+		b.append("\t").append(stats.recall());
+		b.append("\n");
+
+		for (String s : classes) {
+			b.append(s);
+			if (stats.countPredictedOutcomes(s) == 0)
+				b.append("\t").append(0);
+			else
+				b.append("\t").append(stats.precision(s));
+			b.append("\t").append(stats.recall(s));
+			b.append("\n");
+		}
+
+		b.append("\n");
+
+		return b.toString();
+
 	}
 
 	public interface Options {
+
+		@Option
+		public String getLabel();
+
 		@Option(defaultValue = "src/test/resources/gold")
 		public File getGold();
 
 		@Option(defaultValue = "src/test/resources/baseline-ner")
 		public File getSilver();
 
-		@Option(defaultValue = "xmi")
+		@Option(defaultValue = "conll")
 		public String getFormat();
+
+		@Option(defaultValue = "target/")
+		public File getOutput();
+
+		@Option
+		List<String> getClasses();
 	}
 
 }
