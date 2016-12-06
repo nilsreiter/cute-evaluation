@@ -22,8 +22,6 @@ import org.xml.sax.SAXException;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.unistuttgart.ims.creta.api.Entity;
-import de.unistuttgart.ims.creta.api.EntityLOC;
-import de.unistuttgart.ims.creta.api.EntityPER;
 
 public class ReadSilverXmi extends JCasAnnotator_ImplBase {
 
@@ -65,12 +63,8 @@ public class ReadSilverXmi extends JCasAnnotator_ImplBase {
 			for (Entity entity : JCasUtil.select(newJCas, Entity.class)) {
 				Entity e = AnnotationFactory.createAnnotation(silverView, entity.getBegin(), entity.getEnd(),
 						entity.getClass());
+				e.setCategory(entity.getCategory());
 
-				if (e.getClass() == EntityPER.class) {
-					e.setCategory("PER");
-				} else if (e.getClass() == EntityLOC.class) {
-					e.setCategory("LOC");
-				}
 			}
 		} catch (SAXException | IOException | UIMAException e) {
 			e.printStackTrace();
