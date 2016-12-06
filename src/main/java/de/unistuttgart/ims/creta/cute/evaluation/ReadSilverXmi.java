@@ -47,10 +47,6 @@ public class ReadSilverXmi extends JCasAnnotator_ImplBase {
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		String id = DocumentMetaData.get(jcas).getDocumentId();
 
-		if (!silverFiles.containsKey(id)) {
-			throw new AnalysisEngineProcessException();
-		}
-
 		JCas silverView = null;
 		try {
 			silverView = jcas.createView(EvaluationMain.SILVER_VIEW);
@@ -59,6 +55,10 @@ public class ReadSilverXmi extends JCasAnnotator_ImplBase {
 			throw new AnalysisEngineProcessException(e);
 		}
 
+		if (!silverFiles.containsKey(id)) {
+			return;
+			// throw new AnalysisEngineProcessException();
+		}
 		try {
 			JCas newJCas = JCasFactory.createJCas();
 			XmlCasDeserializer.deserialize(new FileInputStream(silverFiles.get(id)), newJCas.getCas(), true);

@@ -55,11 +55,6 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		String id = DocumentMetaData.get(jcas).getDocumentId();
-
-		if (!silverFiles.containsKey(id)) {
-			throw new AnalysisEngineProcessException();
-		}
-
 		JCas silverView = null;
 		try {
 			silverView = jcas.createView(EvaluationMain.SILVER_VIEW);
@@ -68,8 +63,14 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 			throw new AnalysisEngineProcessException(e);
 		}
 
+		if (!silverFiles.containsKey(id)) {
+			return;
+			// throw new AnalysisEngineProcessException();
+		}
+		CSVParser p = null;
 		try {
-			CSVParser p = new CSVParser(new FileReader(silverFiles.get(id)), CSVFormat.TDF.withHeader((String) null));
+			p = new CSVParser(new FileReader(silverFiles.get(id)),
+					CSVFormat.TDF.withHeader((String) null).withQuote(null));
 
 			List<CSVRecord> records = p.getRecords();
 			List<Token> tokens = new ArrayList<Token>(JCasUtil.select(jcas, Token.class));
@@ -83,6 +84,13 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 				int b = tokens.get(i).getBegin();
 
 				CSVRecord currentRecord = records.get(i);
+
+				if (!currentRecord.get(0).equals(tokens.get(i).getCoveredText())) {
+					System.err.println("token broken (" + id + ": " + currentRecord.get(0) + " / "
+							+ tokens.get(i).getCoveredText() + ")!");
+					return;
+				}
+
 				for (int j = 1; j < currentRecord.size(); j++) {
 					String[] rec = currentRecord.get(j).split("_");
 					if (rec.length == 2) {
@@ -90,9 +98,22 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 							candidates.put(rec[1], new AnnotationCandidate(b, rec[0].substring(2)));
 						} else if (rec[0].startsWith("I"))
 							candidates.get(rec[1]).setContinued(true);
+					} else if (rec.length == 1) {
+						if (rec[0].startsWith("O")) {
+
+						} else {
+							String cat = rec[0].substring(2);
+							if (rec[0].startsWith("B"))
+								candidates.put(cat, new AnnotationCandidate(b, rec[0].substring(2)));
+							else if (rec[0].startsWith("I"))
+								if (candidates.containsKey(cat))
+									candidates.get(cat).setContinued(true);
+						}
+
 					}
 				}
 
+				// create annotations that are not continued
 				for (String candId : candidates.keySet()) {
 					AnnotationCandidate cand = candidates.get(candId);
 					if (!cand.isContinued()) {
@@ -104,10 +125,9 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 				for (String c : toRemove) {
 					candidates.remove(c);
 				}
+				toRemove.clear();
 				e = tokens.get(i).getEnd();
 			}
-
-			IOUtils.closeQuietly(p);
 
 			for (String candId : candidates.keySet()) {
 				AnnotationCandidate cand = candidates.get(candId);
@@ -116,6 +136,8 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new AnalysisEngineProcessException(e);
+		} finally {
+			IOUtils.closeQuietly(p);
 		}
 	}
 
