@@ -2,6 +2,7 @@ package de.unistuttgart.ims.creta.cute.evaluation;
 
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
+import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 
@@ -30,6 +31,27 @@ public class VerifyCategoryFeatures extends JCasAnnotator_ImplBase {
 				e.setCategory("ORG");
 			else if (e.getClass() == EntityWRK.class)
 				e.setCategory("WRK");
+			else if (e.getClass() == Entity.class && e.getCategory() != null) {
+				if (e.getCategory().equalsIgnoreCase("PER"))
+					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityPER.class)
+							.setCategory("PER");
+				else if (e.getCategory().equalsIgnoreCase("LOC"))
+					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityLOC.class)
+							.setCategory("LOC");
+				else if (e.getCategory().equalsIgnoreCase("EVT"))
+					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityEVT.class)
+							.setCategory("EVT");
+				else if (e.getCategory().equalsIgnoreCase("ORG"))
+					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityORG.class)
+							.setCategory("ORG");
+				else if (e.getCategory().equalsIgnoreCase("WRK"))
+					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityWRK.class)
+							.setCategory("WRK");
+				else if (e.getCategory().equalsIgnoreCase("CNC"))
+					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityCNC.class)
+							.setCategory("CNC");
+				e.removeFromIndexes();
+			}
 		}
 	}
 
