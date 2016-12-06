@@ -50,10 +50,10 @@ public class NERBaseline {
 	}
 
 	public interface Options {
-		@Option(defaultValue = "src/test/resources/gold")
+		@Option(defaultValue = "/Users/reiterns/Documents/CRETA/cute/gold/xmi")
 		public File getInput();
 
-		@Option(defaultValue = "src/test/resources/baseline-ner")
+		@Option(defaultValue = "/Users/reiterns/Documents/CRETA/cute/silver/baseline-ner")
 		public File getOutput();
 
 	}
