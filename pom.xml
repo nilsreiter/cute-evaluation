@@ -105,5 +105,10 @@
   		</artifactId>
 			<version>1.8.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.unistuttgart.ims</groupId>
+			<artifactId>commons</artifactId>
+			<version>0.1</version>
+		</dependency>
 	</dependencies>
 </project>

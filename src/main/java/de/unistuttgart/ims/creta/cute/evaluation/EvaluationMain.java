@@ -32,6 +32,8 @@ public class EvaluationMain {
 
 	public static String SILVER_VIEW = "Silver";
 
+	public static List<String> categories = Arrays.asList("PER", "WRK", "ORG", "EVT", "CNC", "LOC");
+
 	public static void main(String[] args)
 			throws ResourceInitializationException, UIMAException, IOException, SAXException {
 		Options options = CliFactory.parseArguments(Options.class, args);
@@ -67,17 +69,32 @@ public class EvaluationMain {
 			eval.process(jcas);
 
 		}
-		AnnotationStatistics<String> stats = eval.getStats();
+		AnnotationStatistics<String> stats = eval.getCategoryBasedStats();
 		FileWriter fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".txt"));
-		fw.write(eval(stats, Arrays.asList("PER", "WRK", "ORG", "EVT", "CNC", "LOC")));
+		fw.write(eval("OVERALL", stats, categories));
+		fw.write(eval("spans", eval.getAnnotationBasedStats(), Arrays.asList()));
 		fw.flush();
 		fw.close();
+
+		fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".soft.txt"));
+		for (String s : categories) {
+			fw.write(s);
+			fw.write("\t");
+			fw.write(String.valueOf(eval.getStats().get(s).precision()));
+			fw.write("\t");
+			fw.write(String.valueOf(eval.getStats().get(s).recall()));
+			fw.write("\n");
+
+		}
+		fw.flush();
+		fw.close();
+
 	}
 
-	public static String eval(AnnotationStatistics<String> stats, Collection<String> classes) {
+	public static String eval(String t, AnnotationStatistics<String> stats, Collection<String> classes) {
 		StringBuilder b = new StringBuilder();
 
-		b.append("OVERALL");
+		b.append(t);
 		b.append("\t").append(stats.precision());
 		b.append("\t").append(stats.recall());
 		b.append("\n");
