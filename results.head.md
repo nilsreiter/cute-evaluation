@@ -12,6 +12,8 @@
 
 **BL-NER**: Baseline consisting of applying the newest standard model for German NER, using the Stanford Named Entity Recognizer.
 
+**DFKI**: CUTE participant
+
 **IMS**: Das System ist ein Neuronales Netz, das sequence labelling-fähig ist.
 Anstatt Features aus Wörtern und Texten mithilfe des Einsatzes externer
 Tools zu extrahieren, lernt es textintern sowohl Wort- als auch
@@ -22,6 +24,5 @@ den Ergebnissen.
 
 **IMS2**: Conditional random field. Features: wordform, (NHG) pos tag, character category patterns[^1]. 2 preceding and 1 following token.
 
-**DFKI**: CUTE participant
 
 [^1]: http://cleartk.github.io/cleartk/apidocs/2.0.0/org/cleartk/ml/feature/function/CharacterCategoryPatternFunction.PatternType.html#REPEATS_MERGED

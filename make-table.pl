@@ -3,7 +3,7 @@
 use warnings;
 
 my $DIR="/Users/reiterns/Documents/CRETA/cute/results";
-my @corpora = ("bundestagsdebatten", "adorno", "parzival");
+my @corpora = ("bundestagsdebatten", "adorno", "parzival", "werther");
 my %systems = ("dfki"=>"dfki",
     "ims"=>"ims",
     "ims2"=>"ims2",
@@ -27,7 +27,7 @@ print"\n";
 for my $c (@corpora) {
   printf("| %20s | ", $c);
   for my $system (sort keys %systems) {
-    open(FH, "cat $DIR/$system/$c/$c.txt | grep $tag |");
+    open(FH, "cat $DIR/$system/$c/$c.strict.txt | grep $tag |");
     while(<FH>) {
       chomp;
       my @l = split;

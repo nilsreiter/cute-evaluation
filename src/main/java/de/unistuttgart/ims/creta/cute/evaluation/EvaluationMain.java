@@ -70,13 +70,14 @@ public class EvaluationMain {
 
 		}
 		AnnotationStatistics<String> stats = eval.getCategoryBasedStats();
-		FileWriter fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".txt"));
+		FileWriter fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".strict.txt"));
 		fw.write(eval("OVERALL", stats, categories));
-		fw.write(eval("spans", eval.getAnnotationBasedStats(), Arrays.asList()));
+		// fw.write(eval("spans", eval.getAnnotationBasedStats(),
+		// Arrays.asList()));
 		fw.flush();
 		fw.close();
 
-		fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".soft.txt"));
+		fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".loose.txt"));
 		for (String s : categories) {
 			fw.write(s);
 			fw.write("\t");

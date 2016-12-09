@@ -17,12 +17,6 @@ import org.cleartk.eval.AnnotationStatistics;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.unistuttgart.creta.api.type.Token;
 import de.unistuttgart.ims.creta.api.Entity;
-import de.unistuttgart.ims.creta.api.EntityCNC;
-import de.unistuttgart.ims.creta.api.EntityEVT;
-import de.unistuttgart.ims.creta.api.EntityLOC;
-import de.unistuttgart.ims.creta.api.EntityORG;
-import de.unistuttgart.ims.creta.api.EntityPER;
-import de.unistuttgart.ims.creta.api.EntityWRK;
 
 public class Evaluation {
 	AnnotationStatistics<String> categoryBasedStats = new AnnotationStatistics<String>();
@@ -57,12 +51,12 @@ public class Evaluation {
 			categoryBasedStats.add(goldEntities, systemEntities, AnnotationStatistics.annotationToSpan(),
 					AnnotationStatistics.annotationToFeatureValue("category"));
 
-			evalCategory(jcas, silverView, "PER", EntityPER.class);
-			evalCategory(jcas, silverView, "ORG", EntityORG.class);
-			evalCategory(jcas, silverView, "LOC", EntityLOC.class);
-			evalCategory(jcas, silverView, "WRK", EntityWRK.class);
-			evalCategory(jcas, silverView, "EVT", EntityEVT.class);
-			evalCategory(jcas, silverView, "CNC", EntityCNC.class);
+			// evalCategory(jcas, silverView, "PER", EntityPER.class);
+			// evalCategory(jcas, silverView, "ORG", EntityORG.class);
+			// evalCategory(jcas, silverView, "LOC", EntityLOC.class);
+			// evalCategory(jcas, silverView, "WRK", EntityWRK.class);
+			// evalCategory(jcas, silverView, "EVT", EntityEVT.class);
+			// evalCategory(jcas, silverView, "CNC", EntityCNC.class);
 
 			/*
 			 * for (Entity e : goldEntities) { for (Entity e2 : systemEntities)
@@ -94,7 +88,6 @@ public class Evaluation {
 			Collection<T> candidates = getOverlappingEntities(jcas, e, JCasUtil.select(jcas, clazz));
 			if (candidates.isEmpty()) {
 				stats.get(e.getCategory()).fp1();
-				// System.err.println(e);
 			}
 		}
 	}
