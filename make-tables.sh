@@ -5,7 +5,7 @@ CLASSES="PER LOC ORG WRK CNC"
 SCORES="1 2"
 TGT="results.md"
 
-cat results.head.md > results.md
+cat results.head.md > $TGT
 
 echo "" >> $TGT
 for C in $CLASSES
@@ -25,4 +25,4 @@ do
 done
 
 
-pandoc -o results.pdf results.md
+pandoc -o results.pdf $TGT
