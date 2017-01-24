@@ -7,7 +7,8 @@ my @corpora = ("bundestagsdebatten", "adorno", "parzival", "werther");
 my %systems = ("dfki"=>"dfki",
     "ims"=>"ims",
     "ims2"=>"ims2",
-    "baseline-ner"=>"bl-ner");
+    "baseline-ner"=>"bl-ner",
+    "ims2.1"=>"ims2.1");
 
 my $tag = shift;
 my $column = shift; #2; # 2 precision, 3 recall
@@ -27,13 +28,21 @@ print"\n";
 for my $c (@corpora) {
   printf("| %20s | ", $c);
   for my $system (sort keys %systems) {
-    open(FH, "cat $DIR/$system/$c/$c.strict.txt | grep $tag |");
-    while(<FH>) {
-      chomp;
-      my @l = split;
-      printf("%8.2f | ", $l[$column]*100);
+    if (-e "$DIR/$system/$c/$c.strict.txt") {
+      open(FH, "cat $DIR/$system/$c/$c.strict.txt | grep $tag |");
+      while(<FH>) {
+        chomp;
+        my @l = split;
+        printf("%8.2f | ", $l[$column]*100);
+      }
+      close FH;
+    } else {
+      open(FH, "cat $DIR/baseline-ner/$c/$c.strict.txt | grep $tag |");
+      while(<FH>) {
+        printf("%8s | ", "--");
+      }
+      close FH;
     }
-    close FH;
   }
   print "\n";
 }

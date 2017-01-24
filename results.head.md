@@ -24,5 +24,7 @@ den Ergebnissen.
 
 **IMS2**: Conditional random field. Features: wordform, (NHG) pos tag, character category patterns[^1]. 2 preceding and 1 following token.
 
+**IMS2.1**: IMS2 + check whether a token that starts with an upper case character also appears starting with a lower case character
+
 
 [^1]: http://cleartk.github.io/cleartk/apidocs/2.0.0/org/cleartk/ml/feature/function/CharacterCategoryPatternFunction.PatternType.html#REPEATS_MERGED
