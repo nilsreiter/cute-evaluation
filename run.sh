@@ -19,20 +19,20 @@ CLASSES="PER LOC"
 echo "  $C"
 java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
-C=adorno
-CLASSES="PER WRK"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=bundestagsdebatten
-CLASSES="PER LOC ORG WRK"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=werther
-CLASSES="PER LOC ORG WRK"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+# C=adorno
+# CLASSES="PER WRK"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=bundestagsdebatten
+# CLASSES="PER LOC ORG WRK"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=werther
+# CLASSES="PER LOC ORG WRK"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
 
 #### Sarah
@@ -46,20 +46,20 @@ CLASSES="PER LOC ORG WRK EVT CNC"
 echo "  $C"
 java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
-C=adorno
-CLASSES="PER WRK ORG EVT CNC LOC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=bundestagsdebatten
-CLASSES="PER WRK ORG EVT CNC LOC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=werther
-CLASSES="PER WRK ORG EVT CNC LOC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+# C=adorno
+# CLASSES="PER WRK ORG EVT CNC LOC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=bundestagsdebatten
+# CLASSES="PER WRK ORG EVT CNC LOC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=werther
+# CLASSES="PER WRK ORG EVT CNC LOC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
 
 #### Nils
@@ -73,23 +73,32 @@ CLASSES="PER LOC ORG WRK EVT CNC"
 echo "  $C"
 java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
-C=adorno
+# C=adorno
+# CLASSES="PER LOC ORG WRK EVT CNC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=bundestagsdebatten
+# CLASSES="PER LOC ORG WRK EVT CNC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=werther
+# CLASSES="PER LOC ORG WRK EVT CNC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+
+
+LABEL="ims2+case"
+
+echo "Evaluating $LABEL ..."
+
+C=parzival
 CLASSES="PER LOC ORG WRK EVT CNC"
 echo "  $C"
 java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
-C=bundestagsdebatten
-CLASSES="PER LOC ORG WRK EVT CNC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=werther
-CLASSES="PER LOC ORG WRK EVT CNC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-
-LABEL="ims2.1"
+LABEL="ims2+case+tt"
 
 echo "Evaluating $LABEL ..."
 
@@ -110,17 +119,17 @@ CLASSES="PER LOC ORG WRK EVT CNC"
 echo "  $C"
 java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
-C=adorno
-CLASSES="PER WRK ORG EVT CNC LOC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=bundestagsdebatten
-CLASSES="PER WRK ORG EVT CNC LOC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
-
-C=werther
-CLASSES="PER WRK ORG EVT CNC LOC"
-echo "  $C"
-java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+# C=adorno
+# CLASSES="PER WRK ORG EVT CNC LOC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=bundestagsdebatten
+# CLASSES="PER WRK ORG EVT CNC LOC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+#
+# C=werther
+# CLASSES="PER WRK ORG EVT CNC LOC"
+# echo "  $C"
+# java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
