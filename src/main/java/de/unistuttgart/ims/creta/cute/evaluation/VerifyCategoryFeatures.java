@@ -1,5 +1,8 @@
 package de.unistuttgart.ims.creta.cute.evaluation;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.factory.AnnotationFactory;
@@ -18,6 +21,8 @@ public class VerifyCategoryFeatures extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		Set<Entity> toRemove = new HashSet<Entity>();
+
 		for (Entity e : JCasUtil.select(jcas, Entity.class)) {
 			if (e.getClass() == EntityPER.class)
 				e.setCategory("PER");
@@ -50,8 +55,12 @@ public class VerifyCategoryFeatures extends JCasAnnotator_ImplBase {
 				else if (e.getCategory().equalsIgnoreCase("CNC"))
 					AnnotationFactory.createAnnotation(jcas, e.getBegin(), e.getEnd(), EntityCNC.class)
 							.setCategory("CNC");
-				e.removeFromIndexes();
+				toRemove.add(e);
 			}
+
+		}
+		for (Entity e : toRemove) {
+			e.removeFromIndexes();
 		}
 	}
 

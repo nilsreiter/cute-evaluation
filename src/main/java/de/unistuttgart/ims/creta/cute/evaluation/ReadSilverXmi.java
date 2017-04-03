@@ -20,6 +20,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.util.XmlCasDeserializer;
 import org.xml.sax.SAXException;
 
+import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.unistuttgart.ims.creta.api.Entity;
 
@@ -65,6 +66,11 @@ public class ReadSilverXmi extends JCasAnnotator_ImplBase {
 						entity.getClass());
 				e.setCategory(entity.getCategory());
 
+			}
+
+			for (POS pos : JCasUtil.select(newJCas, POS.class)) {
+				POS p = AnnotationFactory.createAnnotation(silverView, pos.getBegin(), pos.getEnd(), pos.getClass());
+				p.setPosValue(pos.getPosValue());
 			}
 		} catch (SAXException | IOException | UIMAException e) {
 			e.printStackTrace();
