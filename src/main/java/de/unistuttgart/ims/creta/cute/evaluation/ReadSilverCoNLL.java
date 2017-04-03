@@ -133,6 +133,11 @@ public class ReadSilverCoNLL extends JCasAnnotator_ImplBase {
 				AnnotationCandidate cand = candidates.get(candId);
 				AnnotationFactory.createAnnotation(silverView, cand.getBegin(), e, cand.getEntityClass());
 			}
+			for (de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token token : JCasUtil.select(jcas,
+					de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token.class)) {
+				AnnotationFactory.createAnnotation(silverView, token.getBegin(), token.getEnd(),
+						de.unistuttgart.creta.api.type.Token.class);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new AnalysisEngineProcessException(e);

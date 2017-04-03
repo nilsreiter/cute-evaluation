@@ -3,6 +3,7 @@ package de.unistuttgart.ims.creta.cute.evaluation;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +24,8 @@ public class Evaluation {
 	AnnotationStatistics<String> annotationBasedStats = new AnnotationStatistics<String>();
 
 	Map<String, PRStat> stats = new HashMap<String, PRStat>();
+	int correctTokens = 0;
+	int allTokens = 0;
 
 	public Evaluation() {
 		stats.put("PER", new PRStat());
@@ -51,6 +54,8 @@ public class Evaluation {
 			categoryBasedStats.add(goldEntities, systemEntities, AnnotationStatistics.annotationToSpan(),
 					AnnotationStatistics.annotationToFeatureValue("category"));
 
+			tokenBasedEvaluation(jcas, silverView);
+
 			// evalCategory(jcas, silverView, "PER", EntityPER.class);
 			// evalCategory(jcas, silverView, "ORG", EntityORG.class);
 			// evalCategory(jcas, silverView, "LOC", EntityLOC.class);
@@ -68,6 +73,37 @@ public class Evaluation {
 
 		} catch (CASException e) {
 			e.printStackTrace();
+		}
+
+	}
+
+	public void tokenBasedEvaluation(JCas gold, JCas silver) {
+		Map<Token, Collection<Entity>> goldIndex = JCasUtil.indexCovering(gold, Token.class, Entity.class);
+		Map<Token, Collection<Entity>> silverIndex = JCasUtil.indexCovering(silver, Token.class, Entity.class);
+
+		Iterator<Token> goldIterator = new LinkedList<Token>(JCasUtil.select(gold, Token.class)).iterator();
+		Iterator<Token> silverIterator = new LinkedList<Token>(JCasUtil.select(silver, Token.class)).iterator();
+		System.out.println("gold tokens: " + JCasUtil.select(gold, Token.class).size());
+		System.out.println("silver tokens: " + JCasUtil.select(silver, Token.class).size());
+
+		while (goldIterator.hasNext() /* && silverIterator.hasNext() */) {
+			silverIterator.hasNext();
+			allTokens++;
+			Token gToken = goldIterator.next();
+			Token sToken = silverIterator.next();
+
+			Collection<Entity> gEntities = goldIndex.get(gToken);
+			Collection<Entity> sEntities = silverIndex.get(sToken);
+			if (gEntities.isEmpty() && sEntities.isEmpty())
+				correctTokens++;
+			else if (!gEntities.isEmpty() && !sEntities.isEmpty()) {
+				// both have something
+				Entity gE = gEntities.iterator().next();
+				Entity sE = sEntities.iterator().next();
+				if (gE.getCategory().equalsIgnoreCase(sE.getCategory()))
+					correctTokens++;
+			}
+
 		}
 
 	}
@@ -138,6 +174,10 @@ public class Evaluation {
 
 	public Map<String, PRStat> getStats() {
 		return stats;
+	}
+
+	public double getTokenAccuracy() {
+		return correctTokens / (double) allTokens;
 	}
 
 }

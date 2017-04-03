@@ -15,6 +15,7 @@ import org.apache.uima.fit.factory.AggregateBuilder;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.cleartk.eval.AnnotationStatistics;
@@ -66,7 +67,8 @@ public class EvaluationMain {
 							SetDocumentId.PARAM_DOCUMENT_ID, f.getName().replaceAll(".xmi", "")),
 					ag.createAggregateDescription());
 
-			eval.process(jcas);
+			if (JCasUtil.exists(jcas.getView(SILVER_VIEW), Entity.class))
+				eval.process(jcas);
 
 		}
 		AnnotationStatistics<String> stats = eval.getCategoryBasedStats();
@@ -87,6 +89,14 @@ public class EvaluationMain {
 			fw.write("\n");
 
 		}
+
+		fw.flush();
+		fw.close();
+
+		fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".tokens.txt"));
+		fw.write("Token accuracy: ");
+		fw.write(String.valueOf(eval.getTokenAccuracy()));
+		fw.write('\n');
 		fw.flush();
 		fw.close();
 
