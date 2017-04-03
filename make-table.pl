@@ -8,15 +8,16 @@ my @corpora = (#"bundestagsdebatten", "adorno",
   #"werther"
 );
 my %systems = ("dfki"=>"dfki",
-    "ims"=>"ims",
-    "ims2"=>"ims2",
+    #"ims"=>"ims",
     "baseline-ner"=>"bl-ner",
-    "ims2+case"=>"ims2+case",
-    "ims2+case+tt"=>"ims2+case+tt",
-    "ims2-1.3.0"=>"ims2-1.3.0");
+    "ims2"=>"ims2",
+    "ims2+case"=>"+case",
+    "ims2+case+tt"=>"+mhd pos",
+    "ims2-1.3.0"=>"+names list");
 
 my $tag = shift;
 my $column = shift; #2; # 2 precision, 3 recall
+my $evaltype = shift; # strict loose
 
 printf("| %20s | ","corpus");
 for my $s (sort keys %systems) {
@@ -30,11 +31,12 @@ for my $s (sort keys %systems) {
 print"\n";
 #print join(" | ", @systems)." |\n";
 
+
 for my $c (@corpora) {
   printf("| %20s | ", $c);
   for my $system (sort keys %systems) {
-    if (-e "$DIR/$system/$c/$c.strict.txt") {
-      open(FH, "cat $DIR/$system/$c/$c.strict.txt | grep $tag |");
+    if (-e "$DIR/$system/$c/$c.$evaltype.txt") {
+      open(FH, "cat $DIR/$system/$c/$c.$evaltype.txt | grep $tag |");
       while(<FH>) {
         chomp;
         my @l = split;
@@ -42,7 +44,7 @@ for my $c (@corpora) {
       }
       close FH;
     } else {
-      open(FH, "cat $DIR/baseline-ner/$c/$c.strict.txt | grep $tag |");
+      open(FH, "cat $DIR/baseline-ner/$c/$c.$evaltype.txt | grep $tag |");
       while(<FH>) {
         printf("%8s | ", "--");
       }

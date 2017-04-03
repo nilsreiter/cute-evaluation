@@ -18,6 +18,7 @@ import org.cleartk.eval.AnnotationStatistics;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.unistuttgart.creta.api.type.Token;
 import de.unistuttgart.ims.creta.api.Entity;
+import de.unistuttgart.ims.creta.api.EntityPER;
 
 public class Evaluation {
 	AnnotationStatistics<String> categoryBasedStats = new AnnotationStatistics<String>();
@@ -26,6 +27,7 @@ public class Evaluation {
 	Map<String, PRStat> stats = new HashMap<String, PRStat>();
 	int correctTokens = 0;
 	int allTokens = 0;
+	PRStat loose = new PRStat();
 
 	public Evaluation() {
 		stats.put("PER", new PRStat());
@@ -55,6 +57,7 @@ public class Evaluation {
 					AnnotationStatistics.annotationToFeatureValue("category"));
 
 			tokenBasedEvaluation(jcas, silverView);
+			looseEvaluation(jcas, silverView, "PER", EntityPER.class);
 
 			// evalCategory(jcas, silverView, "PER", EntityPER.class);
 			// evalCategory(jcas, silverView, "ORG", EntityORG.class);
@@ -77,14 +80,63 @@ public class Evaluation {
 
 	}
 
+	public void looseEvaluation(JCas gold, JCas silver, String key, Class<? extends Entity> entityType) {
+		Map<Token, Collection<Entity>> goldIndex = JCasUtil.indexCovering(gold, Token.class, Entity.class);
+		Map<Token, Collection<Entity>> silverIndex = JCasUtil.indexCovering(silver, Token.class, Entity.class);
+
+		Map<HashableSpan, Token> gTokenMap = new HashMap<HashableSpan, Token>();
+		Map<HashableSpan, Token> sTokenMap = new HashMap<HashableSpan, Token>();
+
+		for (Token t : JCasUtil.select(gold, Token.class))
+			gTokenMap.put(new HashableSpan(t), t);
+		for (Token t : JCasUtil.select(silver, Token.class))
+			sTokenMap.put(new HashableSpan(t), t);
+
+		for (Entity e : JCasUtil.select(gold, entityType)) {
+			boolean isFound = false;
+			for (Token gt : JCasUtil.selectCovered(Token.class, e)) {
+				HashableSpan gts = new HashableSpan(gt);
+				if (sTokenMap.containsKey(gts)) {
+					if (!silverIndex.get(sTokenMap.get(gts)).isEmpty()) {
+						isFound = true;
+						break;
+					}
+				}
+			}
+
+			if (isFound) {
+				stats.get(key).tp1();
+			} else {
+				stats.get(key).fn1();
+			}
+		}
+
+		for (Entity e : JCasUtil.select(silver, entityType)) {
+			boolean isFound = false;
+			for (Token st : JCasUtil.selectCovered(Token.class, e)) {
+				HashableSpan sts = new HashableSpan(st);
+				if (gTokenMap.containsKey(sts)) {
+					if (!goldIndex.get(gTokenMap.get(sts)).isEmpty()) {
+						isFound = true;
+						break;
+					}
+				}
+			}
+
+			if (isFound) {
+			} else {
+				stats.get(key).fp1();
+			}
+		}
+
+	}
+
 	public void tokenBasedEvaluation(JCas gold, JCas silver) {
 		Map<Token, Collection<Entity>> goldIndex = JCasUtil.indexCovering(gold, Token.class, Entity.class);
 		Map<Token, Collection<Entity>> silverIndex = JCasUtil.indexCovering(silver, Token.class, Entity.class);
 
 		Iterator<Token> goldIterator = new LinkedList<Token>(JCasUtil.select(gold, Token.class)).iterator();
 		Iterator<Token> silverIterator = new LinkedList<Token>(JCasUtil.select(silver, Token.class)).iterator();
-		System.out.println("gold tokens: " + JCasUtil.select(gold, Token.class).size());
-		System.out.println("silver tokens: " + JCasUtil.select(silver, Token.class).size());
 
 		while (goldIterator.hasNext() /* && silverIterator.hasNext() */) {
 			silverIterator.hasNext();
@@ -178,6 +230,10 @@ public class Evaluation {
 
 	public double getTokenAccuracy() {
 		return correctTokens / (double) allTokens;
+	}
+
+	public PRStat getLoose() {
+		return loose;
 	}
 
 }

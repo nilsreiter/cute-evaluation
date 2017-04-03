@@ -80,6 +80,11 @@ public class EvaluationMain {
 		fw.close();
 
 		fw = new FileWriter(new File(options.getOutput(), options.getLabel() + ".loose.txt"));
+		/*
+		 * fw.write(String.valueOf(eval.getLoose().precision()));
+		 * fw.write("\t"); fw.write(String.valueOf(eval.getLoose().recall()));
+		 * fw.write("\n");
+		 */
 		for (String s : categories) {
 			fw.write(s);
 			fw.write("\t");
@@ -87,7 +92,6 @@ public class EvaluationMain {
 			fw.write("\t");
 			fw.write(String.valueOf(eval.getStats().get(s).recall()));
 			fw.write("\n");
-
 		}
 
 		fw.flush();

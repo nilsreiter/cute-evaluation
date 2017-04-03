@@ -6,6 +6,8 @@
 
 **Strict evaluation**: A system entity is counted as correct if and only if both the span and the category are equal to an entity in the gold standard.
 
+**Loose evaluation**: As long as there is a single token  overlap between system and gold we count it as a true positive.
+
 **Precision and Recall**: https://en.wikipedia.org/wiki/Precision_and_recall
 
 ### Systems
@@ -14,17 +16,10 @@
 
 **DFKI**: CUTE participant
 
-**IMS**: Das System ist ein Neuronales Netz, das sequence labelling-fähig ist.
-Anstatt Features aus Wörtern und Texten mithilfe des Einsatzes externer
-Tools zu extrahieren, lernt es textintern sowohl Wort- als auch
-Charakterebenenfeatures. Das macht es zwar besonders leicht übertragbar,
-führt aber dazu, dass es Unemengen an Trainingsdaten braucht, um
-implizit Information wie Struktur etc. zu lernen. Das zeigt sich auch an
-den Ergebnissen.
+**IMS2**: Conditional random field. Features: wordform, (NHG) pos tag, character category patterns[^1]. 2 preceding and 1 following token. Additional features:
 
-**IMS2**: Conditional random field. Features: wordform, (NHG) pos tag, character category patterns[^1]. 2 preceding and 1 following token.
-
-**IMS2.1**: IMS2 + check whether a token that starts with an upper case character also appears starting with a lower case character
-
+- **+case**:  Case lookup. We check whether an upper-case token also appears in lower case
+- **+mhd pos**: New middle high German part of speech tags
+- **+names list**: A list of names extracted from Parzival, Erec, Willehalm and Iwein.
 
 [^1]: http://cleartk.github.io/cleartk/apidocs/2.0.0/org/cleartk/ml/feature/function/CharacterCategoryPatternFunction.PatternType.html#REPEATS_MERGED
