@@ -4,7 +4,7 @@ GOLD=/Users/reiterns/Documents/CRETA/cute/gold/xmi
 SILVER_BASE_DIR=/Users/reiterns/Documents/CRETA/cute/silver
 OUTPUT_BASE_DIR=/Users/reiterns/Documents/CRETA/cute/results
 
-JAR_FILE=target/creta.cute.evaluation-1.0.0.jar
+JAR_FILE=target/creta.cute.evaluation-1.0.1.jar
 
 
 #### DFKI
@@ -99,6 +99,15 @@ echo "  $C"
 java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
 
 LABEL="ims2+case+tt"
+
+echo "Evaluating $LABEL ..."
+
+C=parzival
+CLASSES="PER LOC ORG WRK EVT CNC"
+echo "  $C"
+java -jar $JAR_FILE --gold $GOLD --format xmi --label $LABEL_$C --silver $SILVER_BASE_DIR/$LABEL/$C --output $OUTPUT_BASE_DIR/$LABEL/$C --classes $CLASSES
+
+LABEL="ims2-1.3.0"
 
 echo "Evaluating $LABEL ..."
 

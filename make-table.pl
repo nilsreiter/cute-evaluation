@@ -12,7 +12,8 @@ my %systems = ("dfki"=>"dfki",
     "ims2"=>"ims2",
     "baseline-ner"=>"bl-ner",
     "ims2+case"=>"ims2+case",
-    "ims2+case+tt"=>"ims2+case+tt");
+    "ims2+case+tt"=>"ims2+case+tt",
+    "ims2-1.3.0"=>"ims2-1.3.0");
 
 my $tag = shift;
 my $column = shift; #2; # 2 precision, 3 recall
