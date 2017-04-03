@@ -3,12 +3,16 @@
 use warnings;
 
 my $DIR="/Users/reiterns/Documents/CRETA/cute/results";
-my @corpora = ("bundestagsdebatten", "adorno", "parzival", "werther");
+my @corpora = (#"bundestagsdebatten", "adorno",
+  "parzival"#,
+  #"werther"
+);
 my %systems = ("dfki"=>"dfki",
     "ims"=>"ims",
     "ims2"=>"ims2",
     "baseline-ner"=>"bl-ner",
-    "ims2.1"=>"ims2.1");
+    "ims2+case"=>"ims2+case",
+    "ims2+case+tt"=>"ims2+case+tt");
 
 my $tag = shift;
 my $column = shift; #2; # 2 precision, 3 recall
